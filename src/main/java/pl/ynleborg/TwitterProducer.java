@@ -1,6 +1,10 @@
 package pl.ynleborg;
 
 import com.google.common.collect.Lists;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.twitter.hbc.ClientBuilder;
 import com.twitter.hbc.core.Client;
 import com.twitter.hbc.core.Constants;
@@ -10,6 +14,7 @@ import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint;
 import com.twitter.hbc.core.processor.StringDelimitedProcessor;
 import com.twitter.hbc.httpclient.auth.Authentication;
 import com.twitter.hbc.httpclient.auth.OAuth1;
+import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +47,7 @@ public class TwitterProducer {
     }
 
     private void run(Properties prop) throws InterruptedException {
+        MongoClient mongoClient = null;
         Client client = null;
         try {
             logger.info("START");
@@ -49,13 +55,27 @@ public class TwitterProducer {
             client = createTwitterClient(msgQueue, prop);
             client.connect();
 
+            String connectionString = "mongodb+srv://"
+                    + prop.getProperty("mongo.user")
+                    + ":"
+                    + prop.getProperty("mongo.password")
+                    + "@cluster0-x1pch.mongodb.net/test?retryWrites=true&w=majority";
+            mongoClient = MongoClients.create(
+                    connectionString);
+            MongoDatabase database = mongoClient.getDatabase("jugadamy");
+            MongoCollection<Document> tweets = database.getCollection("tweets");
+
             while (!client.isDone()) {
                 String msg = msgQueue.poll(5, TimeUnit.SECONDS);
                 if (msg != null) {
                     logger.info(msg);
+                    tweets.insertOne(Document.parse(msg));
                 }
             }
         } finally {
+            if (mongoClient != null) {
+                mongoClient.close();
+            }
             if (client != null) {
                 client.stop();
             }
