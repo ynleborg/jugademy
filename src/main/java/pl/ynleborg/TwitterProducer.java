@@ -18,8 +18,6 @@ import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
@@ -28,47 +26,28 @@ import java.util.concurrent.TimeUnit;
 
 public class TwitterProducer {
 
-    private static Logger logger = LoggerFactory.getLogger(TwitterProducer.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(TwitterProducer.class.getName());
 
-    private List<String> terms = Lists.newArrayList("mongodb", "java", "starwars");
+    private static final List<String> TERMS = Lists.newArrayList("mongodb", "java", "starwars");
 
-    public static void main(String[] args) throws InterruptedException {
-        Properties prop = new Properties();
-        try (InputStream input = TwitterProducer.class.getClassLoader().getResourceAsStream("config.properties")) {
-            if (input == null) {
-                logger.error("Sorry, unable to find config.properties");
-                return;
-            }
-            prop.load(input);
-        } catch (IOException e) {
-            logger.error(e.getMessage(), e);
-        }
-        new TwitterProducer().run(prop);
-    }
-
-    private void run(Properties prop) throws InterruptedException {
+    public void run(Properties prop) throws InterruptedException {
         MongoClient mongoClient = null;
         Client client = null;
         try {
-            logger.info("START");
+            LOG.info("START");
             BlockingQueue<String> msgQueue = new LinkedBlockingQueue<>(1000);
             client = createTwitterClient(msgQueue, prop);
             client.connect();
-
-            String connectionString = "mongodb+srv://"
-                    + prop.getProperty("mongo.user")
-                    + ":"
-                    + prop.getProperty("mongo.password")
-                    + "@cluster0-x1pch.mongodb.net/test?retryWrites=true&w=majority";
-            mongoClient = MongoClients.create(
-                    connectionString);
-            MongoDatabase database = mongoClient.getDatabase("jugadamy");
+            mongoClient = MongoClients.create(String.format("mongodb+srv://%s:%s@cluster0-x1pch.mongodb.net/test?retryWrites=true&w=majority",
+                    prop.getProperty("mongo.user"),
+                    prop.getProperty("mongo.password")));
+            MongoDatabase database = mongoClient.getDatabase("jugadamy2021");
             MongoCollection<Document> tweets = database.getCollection("tweets");
 
             while (!client.isDone()) {
                 String msg = msgQueue.poll(5, TimeUnit.SECONDS);
                 if (msg != null) {
-                    logger.info(msg);
+                    LOG.debug(msg);
                     tweets.insertOne(Document.parse(msg));
                 }
             }
@@ -80,14 +59,14 @@ public class TwitterProducer {
                 client.stop();
             }
         }
-        logger.info("STOP");
+        LOG.info("STOP");
     }
 
     private Client createTwitterClient(BlockingQueue<String> msgQueue, Properties prop) {
 
         Hosts streamHost = new HttpHosts(Constants.STREAM_HOST);
         StatusesFilterEndpoint endpoint = new StatusesFilterEndpoint();
-        endpoint.trackTerms(terms);
+        endpoint.trackTerms(TERMS);
         Authentication auth = new OAuth1(
                 prop.getProperty("consumerKey"),
                 prop.getProperty("consumerSecret"),
