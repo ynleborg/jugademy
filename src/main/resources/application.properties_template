@@ -1,0 +1,11 @@
+#Twitter
+twitter.consumerKey = FILLME
+twitter.consumerSecret = FILLME
+twitter.token = FILLME
+twitter.secret = FILLME
+
+#Mongo
+mongo.user = FILLME
+mongo.password = FILLME
+
+kafka.bootstrap = FILLME:9092
