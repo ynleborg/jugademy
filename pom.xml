@@ -11,10 +11,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>pl.ynleborg</groupId>
-    <artifactId>jugadamy2020</artifactId>
+    <artifactId>jugadamy</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>jugadamy2020</name>
+    <name>jugadamy</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,6 +40,33 @@
             <properties>
                 <spring.boot.mainclass>pl.ynleborg.mongo.MongoProducerApplication</spring.boot.mainclass>
             </properties>
+        </profile>
+             <profile>
+            <id>dist</id>
+        
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>1.4.13</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <repository>ynleborg/jugadamy</repository>
+                            <buildArgs>
+                                <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                            </buildArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
