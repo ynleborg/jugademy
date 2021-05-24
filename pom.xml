@@ -56,7 +56,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <repository>ynleborg/jugadamy</repository>
+                            <repository>ynleborg/jugademy</repository>
                             <buildArgs>
                                 <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>
