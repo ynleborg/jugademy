@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>pl.ynleborg</groupId>
-    <artifactId>jugadamy</artifactId>
+    <artifactId>jugademy</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>jugadamy</name>
+    <name>jugademy</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,7 +24,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/ynleborg/jugadamy</url>
+            <url>https://maven.pkg.github.com/ynleborg/jugademy</url>
         </repository>
     </distributionManagement>
 
