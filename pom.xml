@@ -29,7 +29,7 @@
     </distributionManagement>
 
     <scm>
-        <developerConnection>scm:git:git@github.com:ynleborg/jugademy.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/ynleborg/jugademy.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
