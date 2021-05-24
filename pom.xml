@@ -9,7 +9,7 @@
     </parent>
     <groupId>pl.ynleborg</groupId>
     <artifactId>jugademy</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
 
     <name>jugademy</name>
 
@@ -30,7 +30,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/ynleborg/jugademy.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v1.2</tag>
     </scm>
 
     <profiles>
