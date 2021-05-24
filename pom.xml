@@ -28,6 +28,10 @@
         </repository>
     </distributionManagement>
 
+    <scm>
+        <developerConnection>scm:git:git@github.com:ynleborg/jugademy.git</developerConnection>
+    </scm>
+
     <profiles>
         <profile>
             <id>kafka</id>
