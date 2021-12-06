@@ -1,5 +1,6 @@
 package pl.ynleborg.kafka;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -22,6 +23,11 @@ public class KafkaConfiguration {
 
     @Value("${kafka.bootstrap}")
     private String server;
+
+    @Bean
+    public ObjectMapper jacksonObjectMapper() {
+        return new ObjectMapper();
+    }
 
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
