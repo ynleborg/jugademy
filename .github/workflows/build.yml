@@ -36,6 +36,6 @@ jobs:
       - name: Push to Docker
         run: docker push "ynleborg/jugademy:${{ env.MVN_VERSION }}"
       - name: Tag Latest Snapshot
-        run: docker tag "ynleborg/jugademy:${{ env.MVN_VERSION }}" ynleborg/jugademy:latest_snapshot
+        run: docker tag "ynleborg/jugademy:${{ env.MVN_VERSION }}" "ynleborg/jugademy:latest_snapshot"
       - name: Push to Docker
-        run: docker push "ynleborg/jugademy:latest_snapshot
+        run: docker push "ynleborg/jugademy:latest_snapshot"
