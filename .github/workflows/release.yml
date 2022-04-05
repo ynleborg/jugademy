@@ -5,7 +5,6 @@ on:
     branches:
       - release
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,7 +22,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml          
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
       - name: Configure Git user
         run: |
           git config user.email "actions@github.com"
