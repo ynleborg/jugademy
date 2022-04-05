@@ -25,7 +25,7 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
       - name: Build Project and Image
         run: ./mvnw package -P dist
-      - name: Set Release version env variable
+      - name: Set version env variable
         run: |
             echo "MVN_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       - name: Login to DockerHub
